@@ -125,6 +125,104 @@ iframe{
   padding: 12px 0;
   border-top: 1px solid #ddd;
 }
+
+/* Help button top-right */
+.top-help {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.top-help button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.top-help button:hover {
+  background: #1e40af;
+}
+
+/* Modal background */
+.help-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Help box */
+.help-box {
+  background: #ffffff;
+  width: 420px;
+  max-width: 90%;
+  padding: 25px;
+  border-radius: 14px;
+  animation: fadeIn 0.3s ease;
+}
+
+.help-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+/* Steps */
+.help-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.help-step span {
+  background: #2563eb;
+  color: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.help-step p {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Close button */
+.close-btn {
+  margin-top: 18px;
+  width: 100%;
+  padding: 8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: #dc2626;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
     
 </style>
 </head>
@@ -186,6 +284,44 @@ iframe{
 </div>
 </div>
 
+<!-- Help -->
+<div class="top-help">
+  <button onclick="openHelp()">❓ Help</button>
+</div>
+
+<div id="helpModal" class="help-modal">
+  <div class="help-box">
+    <h2>How to Use the Website</h2>
+
+    <div class="help-step">
+      <span>1</span>
+      <p>Select <b>Class</b> and <b>Semester</b></p>
+    </div>
+
+    <div class="help-step">
+      <span>2</span>
+      <p>Enter the <b>Subject Name</b></p>
+    </div>
+
+    <div class="help-step">
+      <span>3</span>
+      <p>Add <b>Practical Questions</b> (one per line)</p>
+    </div>
+
+    <div class="help-step">
+      <span>4</span>
+      <p>Click <b>Preview</b> to print or download PDF</p>
+    </div>
+
+    <div class="help-step">
+      <span>5</span>
+      <p>Click <b>Download Word</b> for final submission</p>
+    </div>
+
+    <button class="close-btn" onclick="closeHelp()">Close</button>
+  </div>
+</div>
+    
 <script>
 function buildHTML(){
     const cls=document.getElementById("class").value;
@@ -303,15 +439,24 @@ function printPaper(){
 function downloadPDF(){
     printPaper(); // Save as PDF via print dialog
 }
+
+function openHelp() {
+  document.getElementById("helpModal").style.display = "flex";
+}
+
+function closeHelp() {
+  document.getElementById("helpModal").style.display = "none";
+}
 </script>
 <footer class="footer">
   © 2026 Department of Advanced Computing,  
   Nagindas Khandwala College, Malad (W).  
   All Rights Reserved.
 </footer>
-
+    
 </body>
 </html>
+
 
 
 
