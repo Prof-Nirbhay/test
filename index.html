@@ -7,46 +7,83 @@
 <style>
 body{
     font-family:"Times New Roman", Times, serif;
-    font-size:12pt;
-    font-weight:bold;
-    background:#f4f6f8;
+    background:#eef1f5;
+    margin:0;
+    padding:0;
 }
 
 .container{
     max-width:900px;
-    margin:20px auto;
+    margin:30px auto;
     background:#fff;
-    padding:20px;
-    border-radius:6px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    padding:25px;
+    border-radius:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
-h3{text-align:center;margin-bottom:10px}
+.header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    border-bottom:2px solid #1f4fd8;
+    padding-bottom:10px;
+    margin-bottom:15px;
+}
 
-label{display:block;margin-top:8px}
+.header img{
+    height:70px;
+}
 
-input,textarea,select,button{
+.header-text{
+    text-align:center;
+    flex:1;
+}
+
+.header-text h2{
+    margin:0;
+    font-size:20px;
+}
+
+.header-text h4{
+    margin:4px 0 0;
+    font-weight:normal;
+}
+
+label{
+    font-weight:bold;
+    display:block;
+    margin-top:10px;
+}
+
+input, textarea, select{
+    width:100%;
+    padding:6px;
     font-family:"Times New Roman", Times, serif;
     font-size:12pt;
-    width:100%;
-    margin-bottom:8px;
-    padding:6px;
+    margin-top:4px;
 }
 
 .actions{
     display:flex;
-    gap:10px;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
 }
 
 button{
+    padding:8px 18px;
+    font-family:"Times New Roman", Times, serif;
+    font-size:12pt;
+    border:none;
+    border-radius:4px;
     cursor:pointer;
     background:#1f4fd8;
     color:#fff;
-    border:none;
-    border-radius:4px;
 }
 
-button:hover{background:#163bb3}
+button:hover{
+    background:#163bb3;
+}
 
 /* PREVIEW MODAL */
 .modal{
@@ -57,19 +94,21 @@ button:hover{background:#163bb3}
     z-index:1000;
 }
 
-.modal-content{
+.modal-box{
     background:#fff;
     width:90%;
-    max-width:900px;
+    max-width:950px;
     margin:30px auto;
     padding:15px;
 }
 
-.modal-header{
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-    margin-bottom:10px;
+.modal-actions{
+    text-align:right;
+    margin-bottom:8px;
+}
+
+.modal-actions button{
+    margin-left:6px;
 }
 
 iframe{
@@ -83,7 +122,14 @@ iframe{
 <body>
 
 <div class="container">
-<h3>Practical Exam Question Paper Generator</h3>
+
+<div class="header">
+    <img src="college_logo.png" alt="College Logo">
+    <div class="header-text">
+        <h2>Practical Exam Question Paper Generator</h2>
+        <h4>DEPARTMENT OF ADVANCED COMPUTING</h4>
+    </div>
+</div>
 
 <label>Class:</label>
 <select id="class">
@@ -115,15 +161,16 @@ iframe{
 <button onclick="openPreview()">Preview</button>
 <button onclick="downloadWord()">Download Word</button>
 </div>
+
 </div>
 
 <!-- PREVIEW MODAL -->
 <div class="modal" id="previewModal">
-<div class="modal-content">
-<div class="modal-header">
-<button onclick="downloadPDF()">Download PDF</button>
-<button onclick="printPaper()">Print</button>
-<button onclick="closePreview()">Close</button>
+<div class="modal-box">
+<div class="modal-actions">
+    <button onclick="downloadPDF()">Download PDF</button>
+    <button onclick="printPaper()">Print</button>
+    <button onclick="closePreview()">Close</button>
 </div>
 <iframe id="previewFrame"></iframe>
 </div>
@@ -134,11 +181,10 @@ function buildHTML(){
     const cls=document.getElementById("class").value;
     const sem=document.getElementById("semester").value;
     const subject=document.getElementById("subject").value.trim();
-
     const qs=document.getElementById("questions").value
         .split(/\r?\n/).map(q=>q.trim()).filter(q=>q);
 
-    if(!subject||qs.length<2){
+    if(!subject || qs.length<2){
         alert("Enter subject name and at least two questions.");
         return null;
     }
@@ -149,7 +195,7 @@ function buildHTML(){
     for(let j=i+1;j<qs.length;j++){
 
 html+=`
-<table width="100%" cellspacing="0" cellpadding="6">
+<table width="100%" cellpadding="6" cellspacing="0">
 <tr>
 <td colspan="3" align="center">
 <b>
@@ -207,7 +253,7 @@ ${cls} SEM ${sem} PRACTICAL EXAMINATION FEBRUARY- 2026
 </tr>
 </table>
 <br><br><br>`;
-}} 
+}}
 
 html+=`</body></html>`;
 return html;
@@ -245,7 +291,7 @@ function printPaper(){
 }
 
 function downloadPDF(){
-    printPaper(); // Save as PDF from print dialog
+    printPaper(); // Save as PDF via print dialog
 }
 </script>
 
