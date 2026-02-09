@@ -6,80 +6,18 @@
 
 <style>
 body {
-    margin: 0;
-    padding: 0;
-    background: #f4f6f8;
     font-family: "Times New Roman", Times, serif;
-}
-
-.wrapper {
-    max-width: 900px;
-    margin: 30px auto;
-    background: #ffffff;
-    padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 15px;
-    margin-bottom: 25px;
-}
-
-.header img {
-    width: 90px;
-}
-
-.header-text {
-    text-align: center;
-    flex: 1;
-}
-
-.header-text h2 {
-    margin: 0;
-    font-size: 20pt;
-}
-
-.header-text h3 {
-    margin: 6px 0 0 0;
-    font-size: 14pt;
-}
-
-label {
+    font-size: 12pt;
     font-weight: bold;
-    display: block;
-    margin-top: 10px;
 }
 
 input, textarea, select, button {
     font-family: "Times New Roman", Times, serif;
     font-size: 12pt;
     width: 100%;
-    padding: 8px 10px;
-    margin-top: 4px;
-    margin-bottom: 10px;
-    border: 1px solid #999;
-    border-radius: 4px;
+    margin-bottom: 8px;
 }
 
-button {
-    background: #000;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    padding: 10px;
-}
-
-button:hover {
-    background: #333;
-}
-
-/* PAPER STYLES */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -95,86 +33,47 @@ td {
 .center { text-align: center; }
 .qno { text-align: center; white-space: nowrap; }
 .marks { text-align: center; white-space: nowrap; }
-
-/* PREVIEW MODAL */
-#previewModal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 1000;
-}
-
-#previewBox {
-    background: #fff;
-    width: 80%;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    max-height: 85vh;
-    overflow: auto;
-}
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<h3 style="text-align:center;">Practical Exam Question Paper Generator</h3>
 
-    <div class="header">
-        <img src="college_logo.png" alt="College Logo">
-        <div class="header-text">
-            <h2>Practical Exam Question Paper Generator</h2>
-            <h3>DEPARTMENT OF ADVANCED COMPUTING</h3>
-        </div>
-    </div>
+<label>Class:</label>
+<select id="class">
+    <option>FYBSc CS AIML</option>
+    <option>SYBSc CS AIML</option>
+    <option>TYBSc CS AIML</option>
+    <option>FYBSc CS CTIS</option>
+    <option>SYBSc CS CTIS</option>
+    <option>TYBSc CS CTIS</option>
+    <option>FYMSc CS</option>
+    <option>SYMSc CS</option>
+    <option>FYMSc CS (CYBER)</option>
+    <option>SYMSc CS (CYBER)</option>
+</select>
 
-    <label>Class:</label>
-    <select id="class">
-        <option>FYBSc CS AIML</option>
-        <option>SYBSc CS AIML</option>
-        <option>TYBSc CS AIML</option>
-        <option>FYBSc CS CTIS</option>
-        <option>SYBSc CS CTIS</option>
-        <option>TYBSc CS CTIS</option>
-        <option>FYMSc CS</option>
-        <option>SYMSc CS</option>
-        <option>FYMSc CS (CYBER)</option>
-        <option>SYMSc CS (CYBER)</option>
-    </select>
+<label>Semester:</label>
+<select id="semester">
+    <option>I</option>
+    <option>II</option>
+    <option>III</option>
+    <option>IV</option>
+    <option>V</option>
+    <option>VI</option>
+</select>
 
-    <label>Semester:</label>
-    <select id="semester">
-        <option>I</option>
-        <option>II</option>
-        <option>III</option>
-        <option>IV</option>
-        <option>V</option>
-        <option>VI</option>
-    </select>
+<label>Subject Name:</label>
+<input type="text" id="subject">
 
-    <label>Subject Name:</label>
-    <input type="text" id="subject">
+<label>Questions (one per line):</label>
+<textarea id="questions" rows="6"></textarea>
 
-    <label>Questions (one per line):</label>
-    <textarea id="questions" rows="6"></textarea>
-
-    <button onclick="previewPaper()">Preview Question Paper</button>
-    <button onclick="generate()">Generate & Download Word File</button>
-
-</div>
-
-<div id="previewModal">
-    <div id="previewBox">
-        <div style="text-align:right;">
-            <button style="width:auto" onclick="closePreview()">Close</button>
-        </div>
-        <div id="previewContent"></div>
-    </div>
-</div>
+<button onclick="generate()">Generate & Download Word File</button>
 
 <script>
-function buildPaper(preview=false) {
+function generate() {
 
     const cls = document.getElementById("class").value;
     const sem = document.getElementById("semester").value;
@@ -187,10 +86,12 @@ function buildPaper(preview=false) {
 
     if (!subject || qs.length < 2) {
         alert("Enter subject name and at least two questions.");
-        return null;
+        return;
     }
 
-    let html = preview ? "" : `<html><head><meta charset='UTF-8'></head><body>`;
+    const fileName = subject.replace(/[\\/:*?"<>|]/g, "");
+
+    let html = `<html><head><meta charset="UTF-8"></head><body>`;
 
     for (let i = 0; i < qs.length; i++) {
         for (let j = i + 1; j < qs.length; j++) {
@@ -198,46 +99,79 @@ function buildPaper(preview=false) {
             html += `
 <table>
 <colgroup>
-<col style='width:60px'><col><col style='width:60px'>
+    <col style="width:60px;">
+    <col>
+    <col style="width:60px;">
 </colgroup>
-<tr><td colspan='3' class='center'><b>
-NAGINDAS KHANDWALA COLLEGE, MALAD(W)<br>(Autonomous)<br><br>
+
+<tr>
+<td colspan="3" class="center">
+<b>
+NAGINDAS KHANDWALA COLLEGE, MALAD(W)<br>
+(Autonomous)<br><br>
 ${cls} SEM ${sem} PRACTICAL EXAMINATION FEBRUARY- 2026
-</b></td></tr>
-<tr><td colspan='3'>Time: 2 Hours<span style='float:right'>Roll No: __________</span></td></tr>
-<tr><td colspan='3'>Course: ${subject}<span style='float:right'>Marks: 50</span></td></tr>
-<b><tr><td class='qno'>Q1</td></b><td>${qs[i]}</td><td class='marks'>20</td></tr>
-<b><tr><td class='qno'>Q2</td></b><td>${qs[j]}</td><td class='marks'>20</td></tr>
-<b><tr><td class='qno'>Q3</td></b><td>VIVA</td><td class='marks'>05</td></tr>
-<b><tr><td class='qno'>Q4</td></b><td>JOURNAL</td><td class='marks'>05</td></tr>
-</table><br><br><br><br>`;
+</b>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" style="padding:0;">
+<table width="100%" style="border-collapse:collapse;">
+<tr>
+<td style="padding:6px; text-align:left;">Time: 2 Hours</td>
+<td style="padding:6px; text-align:right;">Roll No: __________</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" style="padding:0;">
+<table width="100%" style="border-collapse:collapse;">
+<tr>
+<td style="padding:6px; text-align:left;">Course: ${subject}</td>
+<td style="padding:6px; text-align:right;">Marks: 50</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td class="qno">Q1</td>
+<td>${qs[i]}</td>
+<td class="marks">20</td>
+</tr>
+
+<tr>
+<td class="qno">Q2</td>
+<td>${qs[j]}</td>
+<td class="marks">20</td>
+</tr>
+
+<tr>
+<td class="qno">Q3</td>
+<td>VIVA</td>
+<td class="marks">05</td>
+</tr>
+
+<tr>
+<td class="qno">Q4</td>
+<td>JOURNAL</td>
+<td class="marks">05</td>
+</tr>
+
+</table>
+<br><br><br><br>
+`;
         }
     }
 
-    if (!preview) html += `</body></html>`;
-    return html;
-}
+    html += `</body></html>`;
 
-function previewPaper() {
-    const html = buildPaper(true);
-    if (!html) return;
-    document.getElementById("previewContent").innerHTML = html;
-    document.getElementById("previewModal").style.display = "block";
-}
-
-function closePreview() {
-    document.getElementById("previewModal").style.display = "none";
-}
-
-function generate() {
-    const html = buildPaper(false);
-    if (!html) return;
-
-    const subject = document.getElementById("subject").value.trim();
-    const fileName = subject.replace(/[\\/:*?"<>|]/g, "");
-
+    // ✅ GitHub Pages SAFE
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
     link.href = url;
     link.download = fileName + ".doc";
