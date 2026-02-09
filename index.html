@@ -223,7 +223,18 @@ iframe{
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
-    
+
+.sub-points {
+    margin-left: 35px;   /* Indent under main step */
+    margin-top: 6px;
+    list-style-type: disc; /* Bullet points */
+}
+
+.sub-points li {
+    margin-bottom: 5px; /* Spacing between sub-points */
+    font-size: 12pt;
+}
+
 </style>
 </head>
 
@@ -289,57 +300,43 @@ iframe{
     <button onclick="openHelp()">❓ Help</button>
 </div>
 
-<!-- Help Modal -->
 <div id="helpModal" class="help-modal">
-    <div class="help-box">
+  <div class="help-box">
+    <h2>How to Use the Website</h2>
 
-        <h2>How to Use the Website</h2>
-
-        <div class="help-content">
-
-            <!-- LEFT SIDE: STEPS -->
-            <div class="help-steps">
-                <div class="help-step">
-                    <span class="step-no">1</span>
-                    <p>Select the <b>Class</b> and <b>Semester</b>.</p>
-                </div>
-
-                <div class="help-step">
-                    <span class="step-no">2</span>
-                    <p>Enter the <b>Subject Name</b>.</p>
-                </div>
-
-                <div class="help-step">
-                    <span class="step-no">3</span>
-                    <p>Enter the <b>Practical Questions</b>.</p>
-                </div>
-
-                <div class="help-step">
-                    <span class="step-no">4</span>
-                    <p>Click <b>Preview</b> to print or download as <b>PDF</b>.</p>
-                </div>
-
-                <div class="help-step">
-                    <span class="step-no">5</span>
-                    <p>Click <b>Download Word</b> for final submission.</p>
-                </div>
-            </div>
-
-            <!-- RIGHT SIDE: QUESTION RULES -->
-            <div class="question-guide">
-                <h3>How to Write Questions</h3>
-                <ul>
-                    <li>Write <b>only one question per line</b>.</li>
-                    <li>Press <b>Enter</b> after each question.</li>
-                    <li>Each line is treated as a <b>separate question</b>.</li>
-                    <li>Do not combine multiple questions in one line.</li>
-                </ul>
-            </div>
-
-        </div>
-
-        <button class="close-btn" onclick="closeHelp()">Close</button>
+    <div class="help-step">
+      <span>1</span>
+      <p>Select <b>Class</b> and <b>Semester</b></p>
     </div>
+
+    <div class="help-step">
+      <span>2</span>
+      <p>Enter the <b>Subject Name</b></p>
+    </div>
+
+    <div class="help-step">
+      <span>3</span>
+      <p>Add <b>Practical Questions</b> (one per line)</p>
+        <ul class="sub-points">
+        <li>Write only <b>one question per line</b>.</li>
+        <li>Press <b>Enter</b> after each question.</li>
+        <li>Each line is treated as a <b>separate question</b>.</li>
+        <li>Do not combine multiple questions in one line.</li>
+      </ul>
+    </div>
+
+    <div class="help-step">
+      <span>4</span>
+      <p>Click <b>Preview</b> to print or download PDF</p>
+    </div>
+
+    <div class="help-step">
+      <span>5</span>
+      <p>Click <b>Download Word</b> for final submission</p>
+    </div>
+
+    <button class="close-btn" onclick="closeHelp()">Close</button>
+  </div>
 </div>
     
 <script>
@@ -476,6 +473,7 @@ function closeHelp() {
     
 </body>
 </html>
+
 
 
 
