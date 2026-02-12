@@ -39,16 +39,6 @@ body{
     flex:1;
 }
 
-.header-text h2{
-    margin:0;
-    font-size:20px;
-}
-
-.header-text h4{
-    margin:4px 0 0;
-    font-weight:normal;
-}
-
 label{
     font-weight:bold;
     display:block;
@@ -72,7 +62,6 @@ input, textarea, select{
 
 button{
     padding:8px 18px;
-    font-family:"Times New Roman", Times, serif;
     font-size:12pt;
     border:none;
     border-radius:4px;
@@ -85,7 +74,6 @@ button:hover{
     background:#163bb3;
 }
 
-/* PREVIEW MODAL */
 .modal{
     display:none;
     position:fixed;
@@ -107,10 +95,6 @@ button:hover{
     margin-bottom:8px;
 }
 
-.modal-actions button{
-    margin-left:6px;
-}
-
 iframe{
     width:100%;
     height:600px;
@@ -126,115 +110,80 @@ iframe{
   border-top: 1px solid #ddd;
 }
 
-/* Help button top-right */
-.top-help {
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  z-index: 1000;
-}
-
-.top-help button {
-  background: #2563eb;
+#helpBtn {
+  position: fixed;       /* Makes it stay at corner */
+  top: 20px;             /* Distance from top */
+  right: 20px;           /* Distance from right */
+  padding: 8px 16px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-weight: bold;
+  z-index: 10000;        /* Keeps it above everything */
 }
 
-.top-help button:hover {
-  background: #1e40af;
+#helpBtn:hover {
+  background-color: #45a049;
 }
 
-/* Modal background */
 .help-modal {
   display: none;
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
 
-/* Help box */
 .help-box {
-  background: #ffffff;
-  width: 420px;
-  max-width: 90%;
-  padding: 25px;
-  border-radius: 14px;
-  animation: fadeIn 0.3s ease;
+  background: white;
+  width: 450px;
+  margin: 8% auto;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.help-box h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1f2937;
-}
-
-/* Steps */
-.help-step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.help-step span {
-  background: #2563eb;
-  color: #fff;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.close-help {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 22px;
+  cursor: pointer;
   font-weight: bold;
 }
 
-.help-step p {
-  margin: 0;
-  font-size: 14px;
-  color: #374151;
+.help-step {
+  display: flex;
+  margin-bottom: 15px;
 }
 
-/* Close button */
-.close-btn {
-  margin-top: 18px;
-  width: 100%;
-  padding: 8px;
-  background: #ef4444;
+.help-step span {
+  background: #4CAF50;
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.close-btn:hover {
-  background: #dc2626;
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-weight: bold;
 }
 
 .sub-points {
-    margin-left: 35px;   /* Indent under main step */
-    margin-top: 6px;
-    list-style-type: disc; /* Bullet points */
+  margin-left: 35px;
+  font-size: 14px;
 }
 
-.sub-points li {
-    margin-bottom: 5px; /* Spacing between sub-points */
-    font-size: 12pt;
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
-
+    
 </style>
 </head>
 
@@ -275,8 +224,8 @@ iframe{
 <label>Subject Name:</label>
 <input type="text" id="subject">
 
-<label>Questions (one per line):</label>
-<textarea id="questions" rows="6"></textarea>
+<label>Questions (Enter = New Question, Tab = Sub-question):</label>
+<textarea id="questions" rows="8"></textarea>
 
 <div class="actions">
 <button onclick="openPreview()">Preview</button>
@@ -285,7 +234,6 @@ iframe{
 
 </div>
 
-<!-- PREVIEW MODAL -->
 <div class="modal" id="previewModal">
 <div class="modal-box">
 <div class="modal-actions">
@@ -297,13 +245,12 @@ iframe{
 </div>
 </div>
 
-<!-- Help Button -->
-<div class="top-help">
-    <button onclick="openHelp()">❓ Help</button>
-</div>
-
+<button id="helpBtn" onclick="openHelp()">❓ Help</button>
 <div id="helpModal" class="help-modal">
   <div class="help-box">
+
+    <span class="close-help" onclick="closeHelp()">&times;</span>
+
     <h2>How to Use the Website</h2>
 
     <div class="help-step">
@@ -319,17 +266,15 @@ iframe{
     <div class="help-step">
       <span>3</span>
       <p>Add <b>Practical Questions</b> (one per line)</p>
-        </span>
-    </div>
-    <div>
+        </div>
+      <div class="help-step">
         <ul class="sub-points">
         <li>Write only <b>one question per line</b>.</li>
         <li>Press <b>Enter</b> after each question.</li>
-        <li>Each line is treated as a <b>separate question</b>.</li>
-        <li>Do not combine multiple questions in one line.</li>
+        <li>Use <b>Enter+TAB</b> for sub-questions.</li>
+        <li>Each line is treated as a <b>Separate Question</b> Except <b>Enter+Tab</b>.</li>
       </ul>
     </div>
-
     <div class="help-step">
       <span>4</span>
       <p>Click <b>Preview</b> to print or download PDF</p>
@@ -339,31 +284,67 @@ iframe{
       <span>5</span>
       <p>Click <b>Download Word</b> for final submission</p>
     </div>
-
-    <button class="close-btn" onclick="closeHelp()">Close</button>
   </div>
 </div>
     
 <script>
-function buildHTML(){
-    const cls=document.getElementById("class").value;
-    const sem=document.getElementById("semester").value;
-    const subject=document.getElementById("subject").value.trim();
-    const qs=document.getElementById("questions").value
-        .split(/\r?\n/).map(q=>q.trim()).filter(q=>q);
 
-    if(!subject || qs.length<2){
-        alert("Enter subject name and at least two questions.");
+    /* Allow TAB inside textarea */
+document.getElementById("questions").addEventListener("keydown", function(e) {
+    if (e.key === "Tab") {
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = start + 1;
+    }
+});
+
+function buildHTML(){
+
+    const cls = document.getElementById("class").value;
+    const sem = document.getElementById("semester").value;
+    const subject = document.getElementById("subject").value.trim();
+
+    const rawLines = document.getElementById("questions").value
+        .split(/\r?\n/)
+        .filter(line => line.trim() !== "");
+
+    let qs = [];
+    let current = null;
+
+    rawLines.forEach(line => {
+        if(line.startsWith("\t")){
+            if(current){
+                current.sub.push(line.trim());
+            }
+        } else {
+            if(current) qs.push(current);
+            current = {
+                main: line.trim(),
+                sub: []
+            };
+        }
+    });
+
+    if(current) qs.push(current);
+
+    if(!subject || qs.length < 2){
+        alert("Enter subject name and at least two main questions.");
         return null;
     }
 
-    let html=`<html><body style="font-family:'Times New Roman';font-size:12pt;font-weight:bold;">`;
+    let html = `
+    <html>
+    <body style="font-family:'Times New Roman'; font-size:12pt; font-weight:bold;">
+    `;
 
-    for(let i=0;i<qs.length;i++){
-    for(let j=i+1;j<qs.length;j++){
+    for(let i=0; i<qs.length; i++){
+        for(let j=i+1; j<qs.length; j++){
 
-html+=`
+html += `
 <table width="100%" cellpadding="6" cellspacing="0">
+
 <tr>
 <td colspan="3" align="center">
 <b>
@@ -396,98 +377,112 @@ ${cls} SEM ${sem} PRACTICAL EXAMINATION FEBRUARY- 2026
 </td>
 </tr>
 
+<!-- Q1 -->
 <tr>
-<td width="60" align="center">Q1</td>
-<td>${qs[i]}</td>
-<td width="60" align="center">20</td>
+<td align="center" style="white-space:nowrap;"><b>Q1</b></td>
+<td width="100%">
+${qs[i].main}
+${qs[i].sub.map((s,index)=>
+`<div style="margin-left:25px;">(${String.fromCharCode(97+index)}) ${s}</div>`
+).join("")}
+</td>
+<td align="center" style="white-space:nowrap;"><b>20</b></td>
 </tr>
 
+<!-- Q2 -->
 <tr>
-<td align="center">Q2</td>
-<td>${qs[j]}</td>
-<td align="center">20</td>
+<td align="center" style="white-space:nowrap;"><b>Q2</b></td>
+<td width="100%">
+${qs[j].main}
+${qs[j].sub.map((s,index)=>
+`<div style="margin-left:25px;">(${String.fromCharCode(97+index)}) ${s}</div>`
+).join("")}
+</td>
+<td align="center" style="white-space:nowrap;"><b>20</b></td>
 </tr>
 
+<!-- Q3 -->
 <tr>
-<td align="center">Q3</td>
+<td align="center" style="white-space:nowrap;"><b>Q3</b></td>
 <td>VIVA</td>
-<td align="center">05</td>
+<td align="center" style="white-space:nowrap;"><b>05</b></td>
 </tr>
 
+<!-- Q4 -->
 <tr>
-<td align="center">Q4</td>
+<td align="center" style="white-space:nowrap;"><b>Q4</b></td>
 <td>JOURNAL</td>
-<td align="center">05</td>
+<td align="center" style="white-space:nowrap;"><b>05</b></td>
 </tr>
-</table>
-<br><br><br>`;
-}}
 
-html+=`</body></html>`;
-return html;
+</table>
+<br><br><br>
+`;
+        }
+    }
+
+    html += `</body></html>`;
+    return html;
 }
 
 function openPreview(){
-    const html=buildHTML();
+    const html = buildHTML();
     if(!html) return;
-    document.getElementById("previewFrame").srcdoc=html;
-    document.getElementById("previewModal").style.display="block";
+    document.getElementById("previewFrame").srcdoc = html;
+    document.getElementById("previewModal").style.display = "block";
 }
 
 function closePreview(){
-    document.getElementById("previewModal").style.display="none";
+    document.getElementById("previewModal").style.display = "none";
 }
 
 function downloadWord(){
-    const html=buildHTML();
+    const html = buildHTML();
     if(!html) return;
-    const blob=new Blob([html],{type:"text/html"});
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download=document.getElementById("subject").value+".doc";
+    const blob = new Blob([html], {type:"text/html"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = document.getElementById("subject").value + ".doc";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
 }
 
 function printPaper(){
-    const html=buildHTML();
-    const w=window.open("");
+    const html = buildHTML();
+    const w = window.open("");
     w.document.write(html);
     w.document.close();
     w.print();
 }
 
 function downloadPDF(){
-    printPaper(); // Save as PDF via print dialog
+    printPaper();
 }
 
-function openHelp() {
-  document.getElementById("helpModal").style.display = "flex";
+function openHelp(){
+  document.getElementById("helpModal").style.display = "block";
 }
 
-function closeHelp() {
+function closeHelp(){
   document.getElementById("helpModal").style.display = "none";
 }
+
+window.onclick = function(event) {
+  const modal = document.getElementById("helpModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
+
 </script>
+
 <footer class="footer">
-  © 2026 Department of Advanced Computing,  
-  Nagindas Khandwala College, Malad (W).  
+  © 2026 Department of Advanced Computing,
+  Nagindas Khandwala College, Malad (W).
   All Rights Reserved.
 </footer>
-    
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
